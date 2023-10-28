@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import styles from "./App.css";
-import Header from "./Header";
-import Post from "./Post";
-import { ThemeProvider } from "./ThemeContext";
+import { ThemeProvider } from "../../context/ThemeContext";
+import Header from "../Header/index";
+import Post from "../Post/index";
+
+import { Title } from "./styles";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -12,6 +13,7 @@ function App() {
       subtitle: "Sub#01",
       likes: 20,
       read: false,
+      removed: true,
     },
     {
       id: Math.random(),
@@ -19,6 +21,7 @@ function App() {
       subtitle: "Sub#02",
       likes: 10,
       read: true,
+      removed: false,
     },
     {
       id: Math.random(),
@@ -26,6 +29,7 @@ function App() {
       subtitle: "Sub#03",
       likes: 50,
       read: false,
+      removed: false,
     },
     {
       id: Math.random(),
@@ -33,6 +37,7 @@ function App() {
       subtitle: "Sub#04",
       likes: 50,
       read: true,
+      removed: false,
     },
   ]);
 
@@ -49,16 +54,20 @@ function App() {
   }
 
   function handleRemovePost(postId) {
-    setPosts((prevState) => prevState.filter((post) => post.id !== postId));
+    setPosts((prevState) =>
+      prevState.map((post) =>
+        post.id === postId ? { ...post, removed: true } : post
+      )
+    );
   }
 
   return (
     <ThemeProvider>
       <Header>
-        <h2 className={styles.title}>
+        <Title as="h2">
           Posts da semana
           <button onClick={handleRefresh}>Atualizar</button>
-        </h2>
+        </Title>
       </Header>
 
       <hr />
